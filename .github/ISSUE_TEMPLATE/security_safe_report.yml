@@ -21,7 +21,6 @@ body:
       options:
         - Low
         - Medium
-        - High (use private disclosure instead)
     validations:
       required: true
   - type: textarea
