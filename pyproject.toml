@@ -1,7 +1,7 @@
 [project]
 name            = "l9-service"
 version         = "0.1.0"
-description     = "L9 service template — rename l9_service to your package"
+description     = "L9 service template - rename l9_service to your package"
 readme          = "README.md"
 requires-python = ">=3.12"
 license         = { text = "Proprietary" }
@@ -53,15 +53,10 @@ indent-style = "space"
 
 [tool.pyright]
 pythonVersion              = "3.12"
-typeCheckingMode           = "basic"
-reportMissingImports       = "warning"
+typeCheckingMode           = "strict"
+reportMissingImports       = "error"
 reportMissingModuleSource  = false
-reportOptionalMemberAccess = "warning"
-reportGeneralTypeIssues    = "warning"
-reportUnknownMemberType    = false
-reportUnknownVariableType  = false
-reportUnknownArgumentType  = false
-exclude = ["**/__pycache__", ".venv", "venv", "observability", "docs"]
+exclude                    = ["**/__pycache__", ".venv", "venv", "observability", "docs"]
 
 [tool.pytest.ini_options]
 testpaths    = ["tests"]
