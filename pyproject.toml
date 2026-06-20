@@ -15,7 +15,7 @@ dependencies = [
     "opentelemetry-exporter-otlp-proto-grpc>=1.28.0",
     "opentelemetry-instrumentation-fastapi>=0.49b0",
     "opentelemetry-instrumentation-httpx>=0.49b0",
-    "pydantic-settings>=2.5.0",
+    "pydantic-settings>=2.14.2",
 ]
 
 [dependency-groups]
