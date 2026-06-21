@@ -31,7 +31,7 @@ jobs:
       - name: Render rules into temp dir
         run: |
           mkdir -p .generated_cursor_rules
-          uv run python scripts/render_cursor_rules.py --force --output .generated_cursor_rules/
+          uv run python scripts/render_cursor_rules.py --output-dir .generated_cursor_rules/
 
       - name: SHA-256 idempotency proof
         run: |

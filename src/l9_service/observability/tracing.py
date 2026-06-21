@@ -1,3 +1,7 @@
+# L9_META
+# role: observability_tracing
+# version: 1.0.0
+# status: template_infrastructure
 """OTel tracing — span(), @instrument, add_event, get_trace_context. Fix-B design."""
 
 from __future__ import annotations

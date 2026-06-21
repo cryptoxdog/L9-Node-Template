@@ -79,6 +79,16 @@ make test-cov   # tests with coverage report
 └── pyproject.toml                     # Single source of truth for all tooling
 ```
 
+## L9 Node Contract
+
+This template ships an L9 node contract surface. Three pinned artifacts govern the node:
+
+- `contracts/NODECONTRACT.yaml` — node birth contract (capabilities, lifecycle, gates).
+- `nodespec.yaml` — node identity, version, and declared interfaces (read by `tools/verify_contracts.py`).
+- `contracts/ENGINESPEC.yaml` — engine surface this node implements (bridged via `src/l9_service/enginehandlers.py`).
+
+Governance docs: `docs/ARCHITECTURE.md`, `docs/GOVERNANCE.md`, `docs/LIFECYCLE.md`, `docs/NODESPEC_BOUNDARY.md`. Enforcement: `tools/verify_contracts.py`, `tools/audit_engine.py`, `.github/workflows/{contract-verify,audit,codegen-determinism}.yml`.
+
 ## OTel Fix-B Pattern
 
 OTel SDK 1.28+ uses a `do_once` sentinel that prevents repeated `set_tracer_provider()` calls in one process. Fix-B bypasses this in tests by injecting providers into module-level override slots (`_provider_override`, `Metrics._test_provider`) that are cleared by an autouse root fixture. **Never reference these slots in production code.**

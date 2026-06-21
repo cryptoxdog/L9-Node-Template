@@ -1,3 +1,7 @@
+# L9_META
+# role: observability_bootstrap
+# version: 1.0.0
+# status: template_infrastructure
 """OTel bootstrap — single-call initialisation. Idempotent."""
 
 from __future__ import annotations

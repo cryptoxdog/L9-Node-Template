@@ -1,3 +1,7 @@
+# L9_META
+# role: observability_logging
+# version: 1.0.0
+# status: template_infrastructure
 """Structured logging — structlog + OTel trace context injection."""
 
 from __future__ import annotations

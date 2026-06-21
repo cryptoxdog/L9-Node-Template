@@ -1,22 +1,37 @@
 {
-  ".cursor/rules/00-global.mdc": {
-    "template_hash": "1327ea57992c50f0",
-    "config_hash": "a321ac02877392fe",
-    "output_hash": "9a426edffa56b58b"
-  },
-  ".cursor/rules/10-domain-cartridge.mdc": {
-    "template_hash": "1c2559e32524406d",
-    "config_hash": "a321ac02877392fe",
-    "output_hash": "456d8aa06c6481c9"
-  },
-  ".cursor/rules/fastapi.mdc": {
-    "template_hash": "1d4a45db68e2d0af",
-    "config_hash": "a321ac02877392fe",
-    "output_hash": "65677f89c15e5484"
-  },
-  ".cursor/rules/l9-agents.mdc": {
-    "template_hash": "1681ed88ea790640",
-    "config_hash": "a321ac02877392fe",
-    "output_hash": "261b4ca4594b5624"
-  }
+  "config": "plugin-config.yaml",
+  "config_sha256": "97ef462b3fdffc9ad4aec0ef3bdb84ff5d4ac3c6e5a938433309d6cc2adcbcae",
+  "rendered_at": "2026-06-21T17:25:32.260016+00:00",
+  "renderer": "scripts/render_cursor_rules.py",
+  "rules": [
+    {
+      "output": "/tmp/gen/00-global.mdc",
+      "output_sha256": "fb3e782c61aebf1945cac4b2d7425425c38adcc509c3a80dddfdc99adefd0815",
+      "render_id": "00dfec31d06eaf89f0f3c78cfb748df4801f2eb3bcbb067900e20a7d46542f58",
+      "template": ".cursor/rules/templates/00-global.mdc.template",
+      "template_sha256": "d2d7516dc8afaacc58264108e72221f74ebc6139e948c55a8eaf7b49097c9eb8"
+    },
+    {
+      "output": "/tmp/gen/10-domain-cartridge.mdc",
+      "output_sha256": "e0fea77ffd3a612d63ebe596d9f9256d0f4a888d55ca6649b6af68e4ccac1f55",
+      "render_id": "559c96d7ae681d66299b6a450026e3747459cd112cd46d75d7655a75a2967d79",
+      "template": ".cursor/rules/templates/10-domain-cartridge.mdc.template",
+      "template_sha256": "9eb1c85dbfa2d44905e1b0cc73c5ab54bb2e0df2b2f4dd386a7e491944406a52"
+    },
+    {
+      "output": "/tmp/gen/fastapi.mdc",
+      "output_sha256": "437a89a429634fe2329b919e2b1889734d0eb602556b52fae303cecf08b533e7",
+      "render_id": "a76bd5edf4ac18ebc4be51b8c5d3f10ab46f2b54f6a68210f3b35d46fc5b12e3",
+      "template": ".cursor/rules/templates/fastapi.mdc.template",
+      "template_sha256": "069513de82793186f7e739fc077d621684dda8b3e38872e3e726d5db0ae35d11"
+    },
+    {
+      "output": "/tmp/gen/l9-agents.mdc",
+      "output_sha256": "14c0d3248d4137abf558843893fedb716aefeb9c711856804ce6425baf3b307e",
+      "render_id": "59e5a668fc08e8e9cbfd0fd4a5fb1f820eb406e445c4182965426a03e40ecab6",
+      "template": ".cursor/rules/templates/l9-agents.mdc.template",
+      "template_sha256": "d163134735ebdbddf14f0f4017e82a7254fcb9cc9d2665d90e7b7fd34182f350"
+    }
+  ],
+  "schema": "l9.cursor_rules.render_manifest.v1"
 }

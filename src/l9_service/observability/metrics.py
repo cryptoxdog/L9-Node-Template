@@ -1,3 +1,7 @@
+# L9_META
+# role: observability_metrics
+# version: 1.0.0
+# status: template_infrastructure
 """OTel metrics — counter, updown, histogram, timer. Fix-B design."""
 
 from __future__ import annotations

@@ -84,6 +84,16 @@ uv run pytest tests/ -v --tb=short       # 4. behavior gate
 7. Tests MUST isolate OTel providers via Fix-B fixtures — never call `set_tracer_provider()` / `set_meter_provider()` directly in test bodies.
 8. `healthz` and `readyz` endpoints MUST remain unauthenticated and always return 200 when the process is alive.
 
+## L9 Node Contract Surface
+
+This template is governed by the L9 node contract. Agents working in this repo MUST honor the following pinned artifacts:
+
+- `contracts/NODECONTRACT.yaml` — node birth contract (capabilities, lifecycle, gates)
+- `contracts/ENGINESPEC.yaml` — engine surface specification the node implements
+- `src/l9_service/enginehandlers.py` — SDK bridge wiring the engine handlers to the FastAPI app; do NOT bypass it for new engine-facing routes
+- `nodespec.yaml`, `PROVENANCE_MAP.yaml` — node identity + file provenance map
+- See `docs/ARCHITECTURE.md`, `docs/GOVERNANCE.md`, `docs/LIFECYCLE.md`, `docs/NODESPEC_BOUNDARY.md`, `docs/GENERATED_FILES.md` for the full surface and `tools/verify_contracts.py` / `tools/audit_engine.py` for enforcement.
+
 ## Fix-B Pattern — OTel Test Isolation
 
 OTel SDK 1.28+ uses a `do_once` sentinel that blocks repeated `set_*_provider()` calls in a single process. Fix-B bypasses this by injecting providers directly into module-level override slots:

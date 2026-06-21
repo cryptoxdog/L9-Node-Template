@@ -29,7 +29,11 @@ jobs:
 
       - name: Run full L9 audit
         run: |
-          python tools/audit_engine.py --path src/ tests/ tools/ \
+          # Scope: authored production surface only.
+          # tests/ is excluded — test files intentionally lack L9_META headers.
+          # tools/ is excluded — validator/audit scripts contain the names they check
+          # (PacketEnvelope, SDK imports) inside their own detection logic.
+          python tools/audit_engine.py --path src/ \
             --fail-on MEDIUM \
             --json > audit-report.json
           cat audit-report.json

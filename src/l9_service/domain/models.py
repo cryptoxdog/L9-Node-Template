@@ -8,6 +8,7 @@ These models are safe, concrete reference types used by template tests and examp
 Concrete nodes may replace or extend this module through normal source edits, while
 transport handlers remain generated-only.
 """
+
 from __future__ import annotations
 
 from typing import Any

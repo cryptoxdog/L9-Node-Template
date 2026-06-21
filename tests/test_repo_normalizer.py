@@ -118,7 +118,8 @@ def test_plugin_config_missing_file(tmp_path: Path) -> None:
 def test_plugin_config_missing_keys(tmp_path: Path) -> None:
     (tmp_path / "plugin-config.yaml").write_text("plugin_version: '1.0.0'\n")
     r = norm.check_plugin_config_keys(tmp_path, True)[0]
-    assert r.is_violation() and "missing keys" in r.detail
+    assert r.is_violation()
+    assert "missing keys" in r.detail
 
 
 def test_plugin_config_bad_yaml(tmp_path: Path) -> None:
@@ -129,7 +130,9 @@ def test_plugin_config_bad_yaml(tmp_path: Path) -> None:
 def test_report_summary() -> None:
     r = norm.NormalizationReport(violations=2, fixed=1, ok=5)
     s = r.summary()
-    assert "ok=5" in s and "fixed=1" in s and "violations=2" in s
+    assert "ok=5" in s
+    assert "fixed=1" in s
+    assert "violations=2" in s
 
 
 def test_report_to_dict() -> None:
@@ -173,7 +176,8 @@ def test_main_fix_empty_repo(tmp_path: Path) -> None:
 def test_main_report_flag(tmp_path: Path, capsys: pytest.CaptureFixture) -> None:
     rc = norm.main(["--report", "--root", str(minimal_repo(tmp_path))])
     out = capsys.readouterr().out
-    assert rc == 0 and "results" in json.loads(out)
+    assert rc == 0
+    assert "results" in json.loads(out)
 
 
 def test_main_no_args_uses_cwd(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

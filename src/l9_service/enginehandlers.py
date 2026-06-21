@@ -24,6 +24,7 @@ CONTRACT INVARIANTS:
   - No direct node-to-node HTTP. Gate is the sole router.
   - This file is the only file allowed to import from the SDK transport layer.
 """
+
 from __future__ import annotations
 
 from l9_sdk.transport import TransportPacket  # sole SDK bridge import
