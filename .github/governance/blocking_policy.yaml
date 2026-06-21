@@ -1,12 +1,16 @@
+# <!-- L9_META role: governance_policy version: 2.0.0 /L9_META -->
 blocking_policy:
-  version: 1
+  version: 2
   merge_gate: "PR Pipeline Gate"
   blocking_jobs:
     - lint
     - test
     - security
+    - contract-verify    # NEW: L9 contract + architecture verification
+    - audit              # NEW: L9 audit engine HIGH-severity gate
   advisory_jobs:
     - dependency-review
     - gitleaks
+    - codegen-determinism
   unknown_class_behavior: block_all
   inherited_debt_behavior: advisory_unless_touched

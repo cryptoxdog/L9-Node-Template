@@ -1,3 +1,7 @@
+# L9_META
+# role: observability_bootstrap
+# version: 1.0.0
+# status: template_infrastructure
 """OTel bootstrap — single-call initialisation. Idempotent."""
 
 from __future__ import annotations
@@ -40,7 +44,7 @@ def setup_telemetry(
     service_version: str | None = None,
 ) -> None:
     """Initialise OTel tracing + metrics + auto-instrumentation. Idempotent."""
-    global _initialized
+    global _initialized  # noqa: PLW0603
     if _initialized:
         return
     name = service_name or os.getenv("OTEL_SERVICE_NAME", "l9-service")
