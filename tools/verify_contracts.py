@@ -30,7 +30,10 @@ def load_manifest(manifest_path: Path) -> dict:
 
 def verify(repo_root: Path, manifest_path: Path) -> list[str]:
     violations: list[str] = []
-    manifest = load_manifest(manifest_path)
+    # Per Gemini review (PR #16): default to {} when manifest is empty/non-mapping
+    # so .get() does not raise AttributeError.
+    _raw = load_manifest(manifest_path)
+    manifest = _raw if isinstance(_raw, dict) else {}
 
     required_files: list[dict] = manifest.get("required_files", [])
     reference_targets: list[str] = manifest.get("reference_targets", [])

@@ -114,7 +114,13 @@ def audit_file(path: Path) -> list[AuditFinding]:
                 "PacketEnvelope import/usage detected. Use TransportPacket only.",
                 "L9-TRANSPORT",
             )
-        if re.search(r"from l9_sdk\.transport import", line) and not is_bridge:
+        # Broadened per Gemini review (PR #16): catches `from l9_sdk.transport import X`,
+        # `import l9_sdk.transport`, `from l9_sdk import transport`, and bare references.
+        if (
+            re.search(r"\bl9_sdk\.transport\b", line)
+            and not is_bridge
+            and not line.strip().startswith("#")
+        ):
             add(
                 "L9-TRANSPORT-002",
                 "HIGH",
@@ -124,19 +130,25 @@ def audit_file(path: Path) -> list[AuditFinding]:
             )
 
     # ── L9-ROUTER ─────────────────────────────────────────────────────────────
-    for lineno, line in enumerate(lines, 1):
-        if (
-            re.search(r"httpx\.|aiohttp\.|requests\.", line)
-            and not line.strip().startswith("#")
-            and "tests/" not in rel
-        ):
-            add(
-                "L9-ROUTER-001",
-                "HIGH",
-                lineno,
-                "Direct HTTP client usage detected. All calls must go through Gate.",
-                "L9-ROUTER",
-            )
+    # Broadened per Gemini review (PR #16): catches dotted usage (httpx.get, requests.post)
+    # AND direct imports (`import httpx`, `from httpx import AsyncClient`).
+    _ROUTER_DOTTED = re.compile(r"\b(?:httpx|aiohttp|requests)\.")
+    _ROUTER_IMPORT = re.compile(
+        r"^\s*(?:import\s+(?:httpx|aiohttp|requests)\b|from\s+(?:httpx|aiohttp|requests)\b)"
+    )
+    if "tests/" not in rel:
+        for lineno, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                continue
+            if _ROUTER_DOTTED.search(line) or _ROUTER_IMPORT.search(line):
+                add(
+                    "L9-ROUTER-001",
+                    "HIGH",
+                    lineno,
+                    "Direct HTTP client usage detected. All calls must go through Gate.",
+                    "L9-ROUTER",
+                )
 
     # ── L9-SECURITY ───────────────────────────────────────────────────────────
     for node in ast.walk(tree):

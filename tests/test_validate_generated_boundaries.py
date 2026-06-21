@@ -75,7 +75,7 @@ def test_fails_when_sdk_transport_imported_elsewhere(tmp_path, patched_root, cap
     patched_root(repo)
     assert vgb.main() == 1
     out = capsys.readouterr().out
-    assert "SDK transport import outside" in out
+    assert "SDK transport reference/import outside" in out
 
 
 def test_fails_when_legacy_envelope_present(tmp_path, patched_root, capsys):

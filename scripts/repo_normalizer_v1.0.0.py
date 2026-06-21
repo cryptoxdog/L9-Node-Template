@@ -229,6 +229,17 @@ def check_plugin_config_keys(root: Path, check_only: bool) -> list[CheckResult]:
         return [
             CheckResult("plugin_config", "violation", f"parse error: {exc}", "plugin-config.yaml")
         ]
+    # Per Gemini review (PR #16): guard against non-mapping YAML (list/scalar) so
+    # .keys() does not raise AttributeError.
+    if not isinstance(data, dict):
+        return [
+            CheckResult(
+                "plugin_config",
+                "violation",
+                "plugin-config.yaml is not a YAML mapping",
+                "plugin-config.yaml",
+            )
+        ]
     required_keys = {"plugin_version", "repo_name", "domain", "package_name", "python_version"}
     missing = required_keys - set(data.keys())
     if not missing:

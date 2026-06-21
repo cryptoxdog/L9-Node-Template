@@ -83,6 +83,17 @@ def test_run_template_version_missing(tmp_path: Path) -> None:
     assert any(f.rule == "TEMPLATE_VERSION_MISSING" for f in report.findings)
 
 
+def test_run_handles_empty_manifest(tmp_path: Path) -> None:
+    """Per Gemini review: empty manifest must not raise."""
+    (tmp_path / ".l9-template-version").write_text("v1\n")
+    (tmp_path / ".github").mkdir()
+    (tmp_path / ".github" / "CODEOWNERS").write_text("")
+    m = tmp_path / "empty.yaml"
+    m.write_text("", encoding="utf-8")
+    report = tc.run(tmp_path, m)
+    assert report.passed is True
+
+
 def test_run_passes_when_clean(tmp_path: Path) -> None:
     m = _scaffold(tmp_path, {"required_files": []})
     report = tc.run(tmp_path, m)

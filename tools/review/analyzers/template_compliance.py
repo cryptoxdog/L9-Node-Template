@@ -49,7 +49,10 @@ class ComplianceReport:
 
 def run(repo_root: Path, manifest_path: Path) -> ComplianceReport:
     report = ComplianceReport()
-    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    # Per Gemini review (PR #16): default to {} when manifest is empty/non-mapping
+    # so .get() does not raise AttributeError.
+    _raw = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest = _raw if isinstance(_raw, dict) else {}
 
     # Required files
     for entry in manifest.get("required_files", []):
@@ -69,7 +72,8 @@ def run(repo_root: Path, manifest_path: Path) -> ComplianceReport:
         # Warn if protected file is not in CODEOWNERS
         codeowners = repo_root / ".github" / "CODEOWNERS"
         if codeowners.exists():
-            content = codeowners.read_text()
+            # Per Gemini review (PR #16): explicit UTF-8 to avoid platform-dependent decoding.
+            content = codeowners.read_text(encoding="utf-8")
             if protected not in content:
                 report.findings.append(
                     ComplianceFinding(

@@ -56,6 +56,30 @@ def test_l9_router_direct_http_in_src(tmp_path: Path) -> None:
     assert any(x.rule == "L9-ROUTER-001" for x in findings)
 
 
+def test_l9_router_catches_import_form(tmp_path: Path) -> None:
+    """Per Gemini review: must catch `import httpx` and `from httpx import X` too."""
+    for body in (
+        "# L9_META /L9_META\nimport requests\n",
+        "# L9_META /L9_META\nfrom httpx import AsyncClient\n",
+        "# L9_META /L9_META\nimport aiohttp\n",
+    ):
+        f = _write(tmp_path, "src/x.py", body)
+        findings = audit.audit_file(f)
+        assert any(x.rule == "L9-ROUTER-001" for x in findings), body
+
+
+def test_l9_transport_catches_bare_import(tmp_path: Path) -> None:
+    """Per Gemini review: must catch `import l9_sdk.transport` and bare dotted refs."""
+    for body in (
+        "# L9_META /L9_META\nimport l9_sdk.transport\n",
+        "# L9_META /L9_META\nx = l9_sdk.transport.TransportPacket\n",
+        "# L9_META /L9_META\nfrom l9_sdk.transport import X\n",
+    ):
+        f = _write(tmp_path, "src/x.py", body)
+        findings = audit.audit_file(f)
+        assert any(x.rule == "L9-TRANSPORT-002" for x in findings), body
+
+
 def test_l9_router_skipped_in_tests(tmp_path: Path) -> None:
     f = _write(
         tmp_path,

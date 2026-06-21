@@ -90,6 +90,21 @@ def test_verify_missing_reference_target(tmp_path: Path) -> None:
     assert any("MISSING reference target" in v for v in violations)
 
 
+def test_verify_handles_empty_manifest(tmp_path: Path) -> None:
+    """Per Gemini review: empty YAML must not raise AttributeError."""
+    m = tmp_path / "empty.yaml"
+    m.write_text("", encoding="utf-8")
+    assert vc.verify(tmp_path, m) == []
+
+
+def test_verify_handles_list_manifest(tmp_path: Path) -> None:
+    """Per Gemini review: non-mapping YAML must not raise."""
+    m = tmp_path / "list.yaml"
+    m.write_text("- a\n- b\n", encoding="utf-8")
+    # Should not raise; falls back to empty manifest
+    assert vc.verify(tmp_path, m) == []
+
+
 def test_verify_contract_not_mentioned(tmp_path: Path) -> None:
     (tmp_path / "a.md").write_text("# A — no mention here\n", encoding="utf-8")
     (tmp_path / "b.md").write_text("# B\n", encoding="utf-8")

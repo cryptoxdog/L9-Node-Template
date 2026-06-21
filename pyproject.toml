@@ -77,7 +77,12 @@ markers = [
 [tool.coverage.run]
 branch = true
 source = ["src", "scripts", "tools"]
-omit   = ["tests/**"]
+omit   = [
+  "tests/**",
+  # Generated-only file (hand_editing: forbidden) requiring l9_sdk runtime
+  # not installed in template. Re-included when nodes regenerate it with real SDK.
+  "src/l9_service/enginehandlers.py",
+]
 
 [tool.coverage.report]
 show_missing = true

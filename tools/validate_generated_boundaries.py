@@ -42,8 +42,10 @@ def main() -> int:
                 "tools/audit_engine.py",
                 "tools/validate_generated_boundaries.py",
             }:
-                if "from l9_sdk.transport import" in body:
-                    print(f"[FAIL] SDK transport import outside enginehandlers.py: {rel}")
+                # Broadened per Gemini review: catches `from l9_sdk.transport import X`,
+                # `import l9_sdk.transport`, `from l9_sdk import transport`, etc.
+                if "l9_sdk.transport" in body:
+                    print(f"[FAIL] SDK transport reference/import outside enginehandlers.py: {rel}")
                     failures.append(str(rel))
                 legacy_marker = "Packet" + "Envelope"
                 if legacy_marker in body:
