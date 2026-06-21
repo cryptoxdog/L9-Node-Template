@@ -1,0 +1,42 @@
+# <!-- L9_META role: ci_workflow version: 1.0.0 /L9_META -->
+name: audit
+
+on:
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "0 3 * * *"   # nightly full audit
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: L9 Full Audit (HIGH+MEDIUM)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install pyyaml
+
+      - name: Run full L9 audit
+        run: |
+          python tools/audit_engine.py --path src/ tests/ tools/ \
+            --fail-on MEDIUM \
+            --json > audit-report.json
+          cat audit-report.json
+
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: l9-audit-report
+          path: audit-report.json

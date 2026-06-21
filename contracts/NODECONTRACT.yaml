@@ -1,0 +1,47 @@
+# L9_META
+role: node_contract
+version: 1.1.0
+status: template_contract
+tags: [l9, contract, authority, ownership, generated_boundary]
+
+contract_kind: node_contract_template
+schema_version: "1.1.0"
+source_contract: nodespec.yaml
+generated_by: l9-codegen-engine
+template_ownership: reference_contract_only
+
+node_identity:
+  node_slug_source: nodespec.yaml::node.slug
+  authority_class_source: nodespec.yaml::ownership.authority_class
+  mutation_profile_source: nodespec.yaml::ownership.mutation_profile
+
+ownership_contract:
+  owns_source: nodespec.yaml::ownership.owns
+  does_not_own_source: nodespec.yaml::ownership.does_not_own
+  template_default: no_runtime_ownership
+
+permissions_contract:
+  may_do_source: nodespec.yaml::permissions.may_do
+  must_not_do:
+    - direct_node_to_node_http
+    - bypass_gate
+    - import_packet_envelope
+    - write_to_foreign_owned_resource
+
+transport_contract:
+  protocol: TransportPacket
+  router: Gate
+  sdk_bridge: src/l9_service/enginehandlers.py
+  bridge_status: generated_only
+
+lifecycle_contract:
+  states_source: nodespec.yaml::lifecycle.states
+  terminal_states_source: nodespec.yaml::lifecycle.terminal_states
+  invalid_transitions_source: nodespec.yaml::lifecycle.invalid_transitions
+
+non_conformance_conditions:
+  - uses_PacketEnvelope_anywhere
+  - direct_http_to_other_node
+  - handler_count_mismatch_with_enginespec
+  - missing_L9_META_on_tracked_file
+  - manual_edit_to_generated_enginehandlers

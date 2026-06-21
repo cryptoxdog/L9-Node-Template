@@ -1,0 +1,24 @@
+base_template: /mnt/data/L9_REPO_TEMPLATE_V2.zip
+direct_merge_from_pr_pack:
+- contracts/
+- src/l9_service/domain/
+- tools/
+- github governance/workflows
+- docs/ARCHITECTURE.md
+- docs/LIFECYCLE.md
+- .cursor/rules/l9-node-contract.mdc
+- .l9-template-version
+selected_merge_from_einesium:
+- files/.github/workflows/pr-pipeline.yml
+- pyproject strict settings
+- files/src/l9_service/enginehandlers.py authority shape
+rejected_from_einesium:
+- README_APPLY.md
+- COMMIT_MANIFEST.yaml
+- COMMIT_MESSAGES.md
+- PATCH_SUMMARY.md
+- UNKNOWN_AND_MANUAL_ACTIONS.md
+- validation claims as proof
+external_references:
+- l9-codegen-engine owns generation
+- l9-harness-library owns doctrine

@@ -1,0 +1,5 @@
+template: L9-Node-Template
+version: 2.0.0
+released: 2026-06-17
+topology: three-repo
+codegen_input: nodespec.yaml

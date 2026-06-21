@@ -1,0 +1,42 @@
+# <!-- L9_META role: architecture_policy version: 1.0.0 /L9_META -->
+# L9 Architecture Boundary Policy
+# Enforced by: tools/review/analyzers/ and .github/workflows/audit.yml
+
+version: "1.0.0"
+
+sdk_bridge:
+  sole_file: "src/l9_service/enginehandlers.py"
+  rule: "Only enginehandlers.py may import from l9_sdk.transport"
+
+transport_contract:
+  allowed: "TransportPacket"
+  forbidden: "PacketEnvelope"
+  rule: "PacketEnvelope MUST NOT appear anywhere in this repo"
+
+routing:
+  allowed_router: "Gate"
+  rule: "No direct node-to-node HTTP. All packets route through Gate."
+
+domain_isolation:
+  rule: "src/l9_service/domain/ MUST NOT import from l9_sdk.transport"
+  forbidden_imports:
+    - "l9_sdk.transport"
+    - "httpx"         # in src/ (test mocks are allowed in tests/)
+    - "aiohttp"       # in src/
+
+handler_spec_alignment:
+  rule: "Every action in contracts/ENGINESPEC.yaml MUST have a matching handle_<action> in enginehandlers.py"
+  enforced_by: "tools/verify_contracts.py"
+
+observability:
+  rule: "No print() in src/. Use get_logger(__name__)"
+  logging_module: "src/l9_service/observability/logging.py"
+
+security:
+  banned_builtins: ["eval", "exec", "compile"]
+  banned_patterns: ["PacketEnvelope", "requests.get", "requests.post"]
+
+health_endpoints:
+  must_exist: ["/healthz", "/readyz"]
+  must_be_unauthenticated: true
+  always_200_when_alive: true

@@ -1,0 +1,25 @@
+# L9_META
+role: node_spec_input_contract
+version: 1.0.0
+status: reference_input
+generated_by: human_or_domain_author
+consumed_by: l9-codegen-engine
+template_ownership: reference_only
+
+node:
+  slug: template_boundary_node
+  package: l9_service
+
+ownership:
+  authority_class: READER
+  mutation_profile: immutable
+  owns: []
+  does_not_own: []
+
+actions:
+  - slug: template_boundary
+    mutation_class: READ
+    intent: prove generated-only SDK bridge contract before concrete node generation
+
+codegen_owner: l9-codegen-engine
+repo_template_boundary: spec in, generated repo out

@@ -1,0 +1,57 @@
+# <!-- L9_META role: ci_workflow version: 1.0.0 /L9_META -->
+name: codegen-determinism
+
+on:
+  push:
+    paths:
+      - "plugin-config.yaml"
+      - ".cursor/rules/templates/**"
+      - "scripts/render_cursor_rules.py"
+
+concurrency:
+  group: codegen-determinism-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  drift-check:
+    name: Cursor Rules Drift Check (SHA-256 idempotency)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install deps
+        run: uv sync --locked
+
+      - name: Render rules into temp dir
+        run: |
+          mkdir -p .generated_cursor_rules
+          uv run python scripts/render_cursor_rules.py --force --output .generated_cursor_rules/
+
+      - name: SHA-256 idempotency proof
+        run: |
+          FAIL=0
+          for f in .cursor/rules/*.mdc; do
+            fname=$(basename "$f")
+            generated=".generated_cursor_rules/$fname"
+            if [ -f "$generated" ]; then
+              committed_hash=$(sha256sum "$f" | awk '{print $1}')
+              generated_hash=$(sha256sum "$generated" | awk '{print $1}')
+              if [ "$committed_hash" != "$generated_hash" ]; then
+                echo "DRIFT DETECTED: $fname"
+                echo "  committed:  $committed_hash"
+                echo "  generated:  $generated_hash"
+                FAIL=1
+              fi
+            fi
+          done
+          if [ "$FAIL" -eq 1 ]; then
+            echo "Determinism check FAILED — re-run: just render-rules && git commit"
+            exit 1
+          fi
+          echo "Determinism check PASSED ✅"

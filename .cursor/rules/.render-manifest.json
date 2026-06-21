@@ -1,0 +1,22 @@
+{
+  ".cursor/rules/00-global.mdc": {
+    "template_hash": "1327ea57992c50f0",
+    "config_hash": "a321ac02877392fe",
+    "output_hash": "9a426edffa56b58b"
+  },
+  ".cursor/rules/10-domain-cartridge.mdc": {
+    "template_hash": "1c2559e32524406d",
+    "config_hash": "a321ac02877392fe",
+    "output_hash": "456d8aa06c6481c9"
+  },
+  ".cursor/rules/fastapi.mdc": {
+    "template_hash": "1d4a45db68e2d0af",
+    "config_hash": "a321ac02877392fe",
+    "output_hash": "65677f89c15e5484"
+  },
+  ".cursor/rules/l9-agents.mdc": {
+    "template_hash": "1681ed88ea790640",
+    "config_hash": "a321ac02877392fe",
+    "output_hash": "261b4ca4594b5624"
+  }
+}

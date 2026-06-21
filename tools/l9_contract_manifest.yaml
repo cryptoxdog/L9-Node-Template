@@ -1,0 +1,58 @@
+manifest_version: 1.0.0
+required_files:
+- path: contracts/NODECONTRACT.yaml
+  category: node_birth
+  must_be_mentioned_in:
+  - AGENTS.md
+  - README.md
+- path: contracts/ENGINESPEC.yaml
+  category: node_birth
+  must_be_mentioned_in:
+  - AGENTS.md
+- path: src/l9_service/enginehandlers.py
+  category: sdk_bridge
+  must_be_mentioned_in:
+  - AGENTS.md
+  - docs/ARCHITECTURE.md
+- path: tools/audit_engine.py
+  category: tooling
+- path: tools/verify_contracts.py
+  category: tooling
+- path: .l9-template-version
+  category: versioning
+- path: docs/ARCHITECTURE.md
+  category: docs
+- path: docs/LIFECYCLE.md
+  category: docs
+- path: .github/workflows/contract-verify.yml
+  category: ci
+- path: .github/workflows/codegen-determinism.yml
+  category: ci
+- path: .github/workflows/audit.yml
+  category: ci
+- path: tools/validate_generated_boundaries.py
+  category: tooling
+- path: docs/GENERATED_FILES.md
+  category: docs
+- path: docs/NODESPEC_BOUNDARY.md
+  category: docs
+- path: docs/GOVERNANCE.md
+  category: docs
+- path: nodespec.yaml
+  category: input_contract
+  must_be_mentioned_in:
+  - README.md
+  - docs/ARCHITECTURE.md
+reference_targets:
+- AGENTS.md
+- README.md
+- docs/ARCHITECTURE.md
+- docs/NODESPEC_BOUNDARY.md
+- docs/GENERATED_FILES.md
+protected_paths:
+- contracts/NODECONTRACT.yaml
+- contracts/ENGINESPEC.yaml
+- src/l9_service/enginehandlers.py
+- .github/governance/blocking_policy.yaml
+- uv.lock
+- pyproject.toml

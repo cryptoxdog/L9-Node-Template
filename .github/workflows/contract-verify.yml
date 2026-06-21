@@ -1,0 +1,37 @@
+# <!-- L9_META role: ci_workflow version: 1.0.0 /L9_META -->
+name: contract-verify
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+concurrency:
+  group: contract-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract-verify:
+    name: L9 Contract + Architecture Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install pyyaml
+
+      - name: Verify contracts manifest
+        run: python tools/verify_contracts.py --repo-root . --manifest tools/l9_contract_manifest.yaml
+
+      - name: Template compliance check
+        run: python tools/review/analyzers/template_compliance.py --repo-root . --manifest tools/l9_contract_manifest.yaml
+
+      - name: L9 audit (HIGH severity gate)
+        run: python tools/audit_engine.py --path src/ --fail-on HIGH

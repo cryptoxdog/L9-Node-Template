@@ -1,0 +1,31 @@
+---
+description: "L9 Node contract invariants — applied to enginehandlers.py, domain/, contracts/"
+globs: ["src/**/enginehandlers.py", "src/**/domain/**", "contracts/**"]
+alwaysApply: false
+---
+<!-- L9_META role: cursor_rule tags: [l9, contract, invariants, transport] version: 1.0.0 /L9_META -->
+
+# L9 Node Contract — Agent Rules
+
+## Transport Invariants (NEVER violate)
+
+1. `enginehandlers.py` is the **only** file allowed to import from `l9_sdk.transport`.
+2. All handler signatures: `async def handle_<action>(packet: TransportPacket) -> TransportPacket`.
+3. `PacketEnvelope` is **BANNED** — never import, reference, or instantiate it anywhere in this repo.
+4. No direct node-to-node HTTP (`httpx`, `aiohttp`, `requests`) in `src/`. Gate is the sole router.
+
+## Handler-Spec Alignment
+
+- Every action in `contracts/ENGINESPEC.yaml` MUST have exactly one `async handle_<action>` in `enginehandlers.py`.
+- Run `python tools/verify_contracts.py` after any handler add/remove.
+
+## Domain Isolation
+
+- `src/l9_service/domain/` MUST NOT import from `l9_sdk.transport` or any chassis layer.
+- Business rules are pure Python. SDK interaction belongs exclusively in `enginehandlers.py`.
+
+## Before Completing Any Task in These Files
+
+1. Run `python tools/audit_engine.py --path src/ --fail-on HIGH` — 0 HIGH findings required.
+2. Run `python tools/verify_contracts.py` — all verifications must pass.
+3. Run `make ci` / `just ci` — all four quality gates must pass.

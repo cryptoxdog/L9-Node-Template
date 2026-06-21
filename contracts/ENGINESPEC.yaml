@@ -1,0 +1,31 @@
+# L9_META
+role: engine_spec
+version: 1.1.0
+status: template_contract
+tags: [l9, engine, registration, sdk, generated_boundary]
+
+contract_kind: engine_spec_template
+schema_version: "1.1.0"
+source_contract: nodespec.yaml
+generated_by: l9-codegen-engine
+template_ownership: reference_contract_only
+
+node_slug_source: nodespec.yaml::node.slug
+actions_source: nodespec.yaml::actions
+
+action_contract:
+  handler_file: src/l9_service/enginehandlers.py
+  handler_status: generated_only
+  handler_signature: "async def handle_<action_slug>(packet: TransportPacket) -> TransportPacket"
+  required_alignment:
+    - each_nodespec_action_has_one_handler
+    - no_extra_manual_handlers
+    - no_dict_typed_handler_parameters
+    - no_PacketEnvelope_imports
+
+registration_contract:
+  internal_url_source: runtime_environment::NODE_INTERNAL_URL
+  health_endpoint: /healthz
+  readiness_endpoint: /readyz
+  concurrency_source: runtime_environment::NODE_MAX_CONCURRENT
+  timeout_source: runtime_environment::NODE_TIMEOUT_MS
