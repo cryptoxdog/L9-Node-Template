@@ -1,9 +1,12 @@
+# L9_META
+# role: observability_bootstrap
+# version: 1.0.0
+# status: template_infrastructure
 """OTel bootstrap — single-call initialisation. Idempotent."""
 
 from __future__ import annotations
 
 import importlib
-import logging
 import os
 from typing import TYPE_CHECKING
 
@@ -20,10 +23,13 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.sampling import ParentBasedTraceIdRatio
 
+from l9_service.observability.logging import get_logger
+
 if TYPE_CHECKING:
     from fastapi import FastAPI
 
-logger = logging.getLogger(__name__)
+# Use observability framework per coding guideline (PR #17 CodeRabbit critical).
+logger = get_logger(__name__)
 _initialized: bool = False
 
 _OPTIONAL_INSTRUMENTORS = [
@@ -91,5 +97,12 @@ def _instrument_frameworks(app: FastAPI) -> None:
         try:
             mod = importlib.import_module(module_path)
             getattr(mod, class_name)().instrument()
-        except Exception:
-            pass
+        except Exception as exc:
+            # Per CodeRabbit review (PR #17): log at debug so failures are
+            # observable without breaking the graceful-degradation contract.
+            logger.debug(
+                "Optional instrumentor unavailable",
+                module=module_path,
+                class_name=class_name,
+                error=str(exc),
+            )

@@ -29,3 +29,23 @@ repos:
       - id: pyright
         name: "Pyright: type check"
         pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: cursor-rule-drift
+        name: "Cursor rule drift check"
+        language: system
+        entry: uv run python scripts/render_cursor_rules.py --check --diff
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+
+  - repo: local
+    hooks:
+      - id: repo-layout-check
+        name: "Repo layout contract check"
+        language: system
+        entry: uv run python scripts/repo_normalizer_v1.0.0.py --check
+        pass_filenames: false
+        always_run: true
+        stages: [post-checkout]

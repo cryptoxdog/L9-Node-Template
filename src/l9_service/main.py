@@ -1,3 +1,7 @@
+# L9_META
+# role: fastapi_app
+# version: 1.0.0
+# status: template_infrastructure
 """FastAPI application factory."""
 
 from __future__ import annotations

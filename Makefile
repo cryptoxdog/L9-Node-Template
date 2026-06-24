@@ -25,7 +25,7 @@ help: ## Show all targets with descriptions
 # ── Environment ───────────────────────────────────────────────────────────────
 setup: ## Install locked deps + pre-commit hooks
 	uv sync --locked
-	uv run pre-commit install
+	uv run pre-commit install --hook-type pre-commit --hook-type post-checkout
 
 sync: ## Sync deps from uv.lock without upgrading
 	uv sync --locked

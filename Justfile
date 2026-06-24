@@ -16,7 +16,7 @@ default:
 # Install locked deps and pre-commit hooks
 setup:
     uv sync --locked
-    uv run pre-commit install
+    uv run pre-commit install --hook-type pre-commit --hook-type post-checkout
 
 # Sync deps from uv.lock without upgrading
 sync:
